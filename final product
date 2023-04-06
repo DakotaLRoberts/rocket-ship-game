@@ -1,0 +1,119 @@
+#include "lander.h"
+#include <iostream>
+using namespace std;
+int main() {
+double flow;
+lander* point1 = new lander();
+lander key;
+lander key2;
+string choice;
+cout << "Would you like to start your descent? Y/N" << endl;
+cin >> choice;
+if (choice == "Y")
+{
+key.changeflow();
+do {
+key.timechange();
+cout << "Your currnet fuel level " << key.getfuel() <<
+"kilograms " << endl;
+cout << "Your currnet altiude " << key.getheight() << " meters"
+<< endl;
+cout << "Your currnet velocity " << key.getspeed() << " meters 
+per second" << endl;
+} while(key.getheight() > 0 || key.getfuel() > 0 );
+if (key.getfuel() <= 0 && key.getheight() > 0)
+{
+cout << "you lose" << endl;
+}
+else {
+cout << " congrats landing successful" << endl;
+}
+}
+else if(choice == "N")
+{
+cout << "Thank you have a nice day" << endl;
+}
+return 0;
+}
+#include "lander.h"
+#include <iostream>
+using namespace std;
+double lander::getflow() const
+{
+return flow;
+}
+double lander::getspeed() const
+{
+return speed;
+}
+double lander::getheight() const
+{
+return height;
+}
+double lander::getfuel() const
+{
+return fuel;
+}
+double lander::getmass() const
+{
+return mass;
+}
+double lander::getdrain() const
+{
+return drain;
+}
+double lander::getthrust() const
+{
+return thrust;
+}
+void lander::changeflow()
+{
+double input;
+cout << "Please enter a value between 0.0 and 1.0" << endl;
+cin >> input;
+while (input < 0.0 || input > 1.0)
+{
+cout << " error invalid input" << endl;
+cout << "Please enter a value between 0.0 and 1.0" << endl;
+cin >> input;
+}
+this->flow = input;
+}
+void lander::timechange()
+{
+double t = 0.1;
+double f = getthrust();
+double m = getmass();
+double r = getflow();
+double c = getdrain();
+double v = getheight();
+double level = getfuel();
+double velocity, altitude,fuelchange;
+speed = speed - t*((f/m) - 1.62);
+height = v+(t * -v);
+fuel = level-(t * r * c);
+}
+#pragma once
+class lander
+{
+private:
+double flow;
+double speed;
+double height;
+double fuel;
+double mass;
+double drain;
+double thrust;
+public:
+lander() : flow(0), speed(0), height(1000), fuel(1700), mass(900), drain(10), 
+thrust(5000) {}
+double getflow() const;
+double getspeed() const;
+double getheight() const;
+double getfuel() const;
+double getmass() const;
+double getdrain() const;
+double getthrust() const;
+void changeflow();
+void timechange(); 
+};
